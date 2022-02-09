@@ -1,0 +1,2 @@
+xlsxlang:
+	go build
