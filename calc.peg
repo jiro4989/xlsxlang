@@ -1,0 +1,23 @@
+package main
+
+type Parser Peg {
+    Calc
+}
+
+root <- expression
+
+expression <- additive
+
+additive <- multitive (
+    '+' multitive {p.PushOpe("+")} /
+    '-' multitive {p.PushOpe("-")}
+)*
+
+multitive <- value (
+    '*' value {p.PushOpe("*")} /
+    '/' value {p.PushOpe("/")}
+)*
+
+value <-
+    <[0-9]+> {p.PushDigit(text)} /
+    '(' expression ')'
