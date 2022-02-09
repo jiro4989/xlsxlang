@@ -4,20 +4,36 @@ type Parser Peg {
     Calc
 }
 
-root <- expression
+root
+  <- expression
 
-expression <- additive
+expression
+  <- additive
 
-additive <- multitive (
-    '+' multitive {p.PushOpe("+")} /
-    '-' multitive {p.PushOpe("-")}
-)*
+additive
+  <- multitive
+  ( _ '+' _ multitive {p.PushOpe("+")}
+  / _ '-' _ multitive {p.PushOpe("-")}
+  )*
 
-multitive <- value (
-    '*' value {p.PushOpe("*")} /
-    '/' value {p.PushOpe("/")}
-)*
+multitive
+  <- primary
+  ( _ '*' _ primary {p.PushOpe("*")}
+  / _ '/' _ primary {p.PushOpe("/")}
+  )*
 
-value <-
-    <[0-9]+> {p.PushDigit(text)} /
-    '(' expression ')'
+primary
+  <- '(' _ expression _ ')'
+  / < NUMBER > {p.PushDigit(text)}
+
+bool
+  <- (TRUE / FALSE) {p.PushBool(text)}
+
+NUMBER <- [0-9]+
+TRUE <- 'true'
+FALSE <- 'false'
+
+_ <- WHITESPACE*
+WHITESPACE <- ' ' / '\n'
+EOL <- '\n'
+EOF <- !.

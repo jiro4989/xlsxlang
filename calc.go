@@ -8,6 +8,7 @@ import (
 type Calc struct {
 	OpeStack   []string
 	DigitQueue []int
+	BoolQueue  []bool
 }
 
 func (c *Calc) PushOpe(ope string) {
@@ -23,6 +24,11 @@ func (c *Calc) PushOpe(ope string) {
 	case "/":
 		c.pushDigit(b / a)
 	}
+}
+
+func (c *Calc) PushBool(b string) {
+	v, _ := strconv.ParseBool(b)
+	c.BoolQueue = append(c.BoolQueue, v)
 }
 
 func (c *Calc) PushDigit(digit string) {
