@@ -5,15 +5,19 @@ import (
 	"os"
 )
 
+const (
+	logFlag = log.LstdFlags | log.Lshortfile | log.Lmsgprefix | log.Lmicroseconds
+)
+
 var (
-	stdoutLogger = log.New(os.Stdout, appName, log.LstdFlags|log.Lshortfile|log.Lmsgprefix)
-	stderrLogger = log.New(os.Stderr, appName, log.LstdFlags|log.Lshortfile|log.Lmsgprefix)
+	stdoutLogger = log.New(os.Stdout, appName, logFlag)
+	stderrLogger = log.New(os.Stderr, appName, logFlag)
 )
 
 func Info(s string) {
-	stdoutLogger.Output(1, "[INFO] "+s)
+	stdoutLogger.Output(1, " [INFO] "+s)
 }
 
 func Err(err error) {
-	stderrLogger.Output(1, "[ERR ] "+err.Error())
+	stderrLogger.Output(1, " [ERR ] "+err.Error())
 }
