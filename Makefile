@@ -1,4 +1,4 @@
-xlsxlang:
+xlsxlang: grammer.peg.go *.go
 	go build
 
 grammer.peg.go: grammer.peg
