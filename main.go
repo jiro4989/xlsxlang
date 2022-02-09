@@ -33,6 +33,6 @@ func Main(args []string) ExitStatus {
 	}
 
 	parser.Execute()
-	parser.Compute()
+	parser.Evaluate()
 	return exitStatusOK
 }

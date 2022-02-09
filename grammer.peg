@@ -1,39 +1,17 @@
 package main
 
 type Parser Peg {
-    Calc
+    Eval
 }
 
-root
-  <- expression
-
-expression
-  <- additive
-
-additive
-  <- multitive
-  ( _ '+' _ multitive {p.PushOpe("+")}
-  / _ '-' _ multitive {p.PushOpe("-")}
-  )*
-
-multitive
-  <- primary
-  ( _ '*' _ primary {p.PushOpe("*")}
-  / _ '/' _ primary {p.PushOpe("/")}
-  )*
-
-primary
-  <- '(' _ expression _ ')'
-  / < NUMBER > {p.PushDigit(text)}
-
-bool
-  <- (TRUE / FALSE) {p.PushBool(text)}
-
-STRING <- '"' ([^"\\] / '\\')* '"'
-NUMBER <- [0-9]+
-TRUE <- 'true'
-FALSE <- 'false'
-_ <- WHITESPACE*
-WHITESPACE <- ' ' / '\n'
-EOL <- '\n'
-EOF <- !.
+program   <- cell+
+cell      <- space* (list / atom) space*
+list      <- '(' cell+ ')'                { p.PushList() }
+atom      <- bool / int / str / symbol
+bool      <- < 'true' / 'false' >         { p.PushBool(text) }
+int       <- < [1-9] [0-9]* / [0] >       { p.PushInt(text) }
+str       <- '"' < ([^"\\] / '\\')* > '"' { p.PushStr(text) }
+symbol    <- < (!delimiter .)+ >          { p.PushSymbol(text) }
+space     <- ' ' / '\n'
+paren     <- '(' / ')'
+delimiter <- paren / space
