@@ -29,10 +29,10 @@ primary
 bool
   <- (TRUE / FALSE) {p.PushBool(text)}
 
+STRING <- '"' ([^"\\] / '\\')* '"'
 NUMBER <- [0-9]+
 TRUE <- 'true'
 FALSE <- 'false'
-
 _ <- WHITESPACE*
 WHITESPACE <- ' ' / '\n'
 EOL <- '\n'

@@ -24,6 +24,7 @@ const (
 	rulemultitive
 	ruleprimary
 	rulebool
+	ruleSTRING
 	ruleNUMBER
 	ruleTRUE
 	ruleFALSE
@@ -48,6 +49,7 @@ var rul3s = [...]string{
 	"multitive",
 	"primary",
 	"bool",
+	"STRING",
 	"NUMBER",
 	"TRUE",
 	"FALSE",
@@ -178,7 +180,7 @@ type Parser struct {
 
 	Buffer string
 	buffer []rune
-	rules  [21]func() bool
+	rules  [22]func() bool
 	parse  func(rule ...int) error
 	reset  func()
 	Pretty bool
@@ -577,108 +579,110 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 		},
 		/* 5 bool <- <((TRUE / FALSE) Action5)> */
 		nil,
-		/* 6 NUMBER <- <[0-9]+> */
+		/* 6 STRING <- <('"' ((!('"' / '\\') .) / '\\')* '"')> */
+		nil,
+		/* 7 NUMBER <- <[0-9]+> */
 		func() bool {
-			position22, tokenIndex22 := position, tokenIndex
+			position23, tokenIndex23 := position, tokenIndex
 			{
-				position23 := position
+				position24 := position
 				if c := buffer[position]; c < rune('0') || c > rune('9') {
-					goto l22
+					goto l23
 				}
 				position++
-			l24:
+			l25:
 				{
-					position25, tokenIndex25 := position, tokenIndex
+					position26, tokenIndex26 := position, tokenIndex
 					if c := buffer[position]; c < rune('0') || c > rune('9') {
-						goto l25
+						goto l26
 					}
 					position++
-					goto l24
-				l25:
-					position, tokenIndex = position25, tokenIndex25
+					goto l25
+				l26:
+					position, tokenIndex = position26, tokenIndex26
 				}
-				add(ruleNUMBER, position23)
+				add(ruleNUMBER, position24)
 			}
 			return true
-		l22:
-			position, tokenIndex = position22, tokenIndex22
+		l23:
+			position, tokenIndex = position23, tokenIndex23
 			return false
 		},
-		/* 7 TRUE <- <('t' 'r' 'u' 'e')> */
+		/* 8 TRUE <- <('t' 'r' 'u' 'e')> */
 		nil,
-		/* 8 FALSE <- <('f' 'a' 'l' 's' 'e')> */
+		/* 9 FALSE <- <('f' 'a' 'l' 's' 'e')> */
 		nil,
-		/* 9 _ <- <WHITESPACE*> */
+		/* 10 _ <- <WHITESPACE*> */
 		func() bool {
 			{
-				position29 := position
-			l30:
+				position30 := position
+			l31:
 				{
-					position31, tokenIndex31 := position, tokenIndex
+					position32, tokenIndex32 := position, tokenIndex
 					if !_rules[ruleWHITESPACE]() {
-						goto l31
-					}
-					goto l30
-				l31:
-					position, tokenIndex = position31, tokenIndex31
-				}
-				add(rule_, position29)
-			}
-			return true
-		},
-		/* 10 WHITESPACE <- <(' ' / '\n')> */
-		func() bool {
-			position32, tokenIndex32 := position, tokenIndex
-			{
-				position33 := position
-				{
-					position34, tokenIndex34 := position, tokenIndex
-					if buffer[position] != rune(' ') {
-						goto l35
-					}
-					position++
-					goto l34
-				l35:
-					position, tokenIndex = position34, tokenIndex34
-					if buffer[position] != rune('\n') {
 						goto l32
 					}
-					position++
+					goto l31
+				l32:
+					position, tokenIndex = position32, tokenIndex32
 				}
-			l34:
-				add(ruleWHITESPACE, position33)
+				add(rule_, position30)
 			}
 			return true
-		l32:
-			position, tokenIndex = position32, tokenIndex32
+		},
+		/* 11 WHITESPACE <- <(' ' / '\n')> */
+		func() bool {
+			position33, tokenIndex33 := position, tokenIndex
+			{
+				position34 := position
+				{
+					position35, tokenIndex35 := position, tokenIndex
+					if buffer[position] != rune(' ') {
+						goto l36
+					}
+					position++
+					goto l35
+				l36:
+					position, tokenIndex = position35, tokenIndex35
+					if buffer[position] != rune('\n') {
+						goto l33
+					}
+					position++
+				}
+			l35:
+				add(ruleWHITESPACE, position34)
+			}
+			return true
+		l33:
+			position, tokenIndex = position33, tokenIndex33
 			return false
 		},
-		/* 11 EOL <- <'\n'> */
+		/* 12 EOL <- <'\n'> */
 		nil,
-		/* 12 EOF <- <!.> */
+		/* 13 EOF <- <!.> */
 		nil,
-		/* 14 Action0 <- <{p.PushOpe("+")}> */
+		/* 15 Action0 <- <{p.PushOpe("+")}> */
 		func() bool {
 			{
 				add(ruleAction0, position)
 			}
 			return true
 		},
-		/* 15 Action1 <- <{p.PushOpe("-")}> */
+		/* 16 Action1 <- <{p.PushOpe("-")}> */
 		func() bool {
 			{
 				add(ruleAction1, position)
 			}
 			return true
 		},
-		/* 16 Action2 <- <{p.PushOpe("*")}> */
+		/* 17 Action2 <- <{p.PushOpe("*")}> */
 		func() bool {
 			{
 				add(ruleAction2, position)
 			}
 			return true
 		},
-		/* 17 Action3 <- <{p.PushOpe("/")}> */
+		/* 18 Action3 <- <{p.PushOpe("/")}> */
 		func() bool {
 			{
 				add(ruleAction3, position)
@@ -686,14 +690,14 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			return true
 		},
 		nil,
-		/* 19 Action4 <- <{p.PushDigit(text)}> */
+		/* 20 Action4 <- <{p.PushDigit(text)}> */
 		func() bool {
 			{
 				add(ruleAction4, position)
 			}
 			return true
 		},
-		/* 20 Action5 <- <{p.PushBool(text)}> */
+		/* 21 Action5 <- <{p.PushBool(text)}> */
 		nil,
 	}
 	p.rules = _rules
