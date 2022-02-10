@@ -197,6 +197,55 @@ func TestParse(t *testing.T) {
 				},
 			},
 		},
+		{
+			desc:    "正常系: ネストしたリスト 2",
+			program: `(= (+ 1 2) (- 3 2))`,
+			want: []Token{
+				{
+					Kind: kindList,
+					ValueList: []Token{
+						{
+							Kind:        kindSymbol,
+							ValueSymbol: "=",
+						},
+						{
+							Kind: kindList,
+							ValueList: []Token{
+								{
+									Kind:        kindSymbol,
+									ValueSymbol: "+",
+								},
+								{
+									Kind:     kindInt,
+									ValueInt: 1,
+								},
+								{
+									Kind:     kindInt,
+									ValueInt: 2,
+								},
+							},
+						},
+						{
+							Kind: kindList,
+							ValueList: []Token{
+								{
+									Kind:        kindSymbol,
+									ValueSymbol: "-",
+								},
+								{
+									Kind:     kindInt,
+									ValueInt: 3,
+								},
+								{
+									Kind:     kindInt,
+									ValueInt: 2,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, tt := range tests {
