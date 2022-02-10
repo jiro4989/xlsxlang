@@ -20,6 +20,9 @@ require (
 	github.com/mattn/go-runewidth v0.0.3 // indirect
 	github.com/peterh/liner v1.2.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/pointlander/compress v1.1.1-0.20190518213731-ff44bd196cc3 // indirect
+	github.com/pointlander/jetset v1.0.1-0.20190518214125-eee7eff80bd4 // indirect
+	github.com/pointlander/peg v1.0.1 // indirect
 	github.com/russross/blackfriday/v2 v2.0.1 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/sirupsen/logrus v1.6.0 // indirect
