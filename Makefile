@@ -1,4 +1,5 @@
 xlsxlang: grammer.peg.go *.go
+	go fmt .
 	go build
 
 grammer.peg.go: grammer.peg

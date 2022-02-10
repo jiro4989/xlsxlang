@@ -1,16 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 )
 
 type TokenKind int
 
 type Eval struct {
-	Token
-	BufferDepth int
-	BufferToken []Token
+	tokens       []Token
+	depth        int
+	bufferTokens []Token
 }
 
 type Token struct {
@@ -36,8 +35,7 @@ func (e *Eval) PushBool(s string) {
 		Kind:      kindBool,
 		ValueBool: b,
 	}
-	e.BufferToken = append(e.BufferToken, token)
-	e.Token = token
+	e.push(token)
 }
 
 func (e *Eval) PushInt(s string) {
@@ -46,8 +44,7 @@ func (e *Eval) PushInt(s string) {
 		Kind:     kindInt,
 		ValueInt: i,
 	}
-	e.BufferToken = append(e.BufferToken, token)
-	e.Token = token
+	e.push(token)
 }
 
 func (e *Eval) PushStr(s string) {
@@ -55,8 +52,7 @@ func (e *Eval) PushStr(s string) {
 		Kind:     kindStr,
 		ValueStr: s,
 	}
-	e.BufferToken = append(e.BufferToken, token)
-	e.Token = token
+	e.push(token)
 }
 
 func (e *Eval) PushSymbol(s string) {
@@ -64,18 +60,33 @@ func (e *Eval) PushSymbol(s string) {
 		Kind:        kindSymbol,
 		ValueSymbol: s,
 	}
-	e.BufferToken = append(e.BufferToken, token)
-	e.Token = token
+	e.push(token)
 }
 
-func (e *Eval) PushList() {
+func (e *Eval) Begin() {
+	e.depth++
 	token := Token{
-		Kind:      kindList,
-		ValueList: e.BufferToken,
+		Kind: kindList,
 	}
-	e.Token = token
+	e.bufferTokens = append(e.bufferTokens, token)
+}
+
+func (e *Eval) End() {
+	e.depth--
+	token := e.bufferTokens[e.depth]
+	e.bufferTokens = e.bufferTokens[:e.depth]
+	e.push(token)
 }
 
 func (e *Eval) Evaluate() {
-	fmt.Println("eval")
+}
+
+func (e *Eval) push(token Token) {
+	d := e.depth
+	if d < 1 {
+		e.tokens = append(e.tokens, token)
+		return
+	}
+	d--
+	e.bufferTokens[d].ValueList = append(e.bufferTokens[d].ValueList, token)
 }

@@ -6,7 +6,9 @@ type Parser Peg {
 
 program   <- cell+
 cell      <- space* (list / atom) space*
-list      <- '(' cell+ ')'                { p.PushList() }
+list      <- '('                          { p.Begin() }
+             cell+
+             ')'                          { p.End() }
 atom      <- bool / int / str / symbol
 bool      <- < 'true' / 'false' >         { p.PushBool(text) }
 int       <- < [1-9] [0-9]* / [0] >       { p.PushInt(text) }

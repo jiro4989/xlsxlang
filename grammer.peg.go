@@ -30,11 +30,12 @@ const (
 	ruleparen
 	ruledelimiter
 	ruleAction0
-	rulePegText
 	ruleAction1
+	rulePegText
 	ruleAction2
 	ruleAction3
 	ruleAction4
+	ruleAction5
 )
 
 var rul3s = [...]string{
@@ -51,11 +52,12 @@ var rul3s = [...]string{
 	"paren",
 	"delimiter",
 	"Action0",
-	"PegText",
 	"Action1",
+	"PegText",
 	"Action2",
 	"Action3",
 	"Action4",
+	"Action5",
 }
 
 type token32 struct {
@@ -172,7 +174,7 @@ type Parser struct {
 
 	Buffer string
 	buffer []rune
-	rules  [18]func() bool
+	rules  [19]func() bool
 	parse  func(rule ...int) error
 	reset  func()
 	Pretty bool
@@ -275,14 +277,16 @@ func (p *Parser) Execute() {
 			text = string(_buffer[begin:end])
 
 		case ruleAction0:
-			p.PushList()
+			p.Begin()
 		case ruleAction1:
-			p.PushBool(text)
+			p.End()
 		case ruleAction2:
-			p.PushInt(text)
+			p.PushBool(text)
 		case ruleAction3:
-			p.PushStr(text)
+			p.PushInt(text)
 		case ruleAction4:
+			p.PushStr(text)
+		case ruleAction5:
 			p.PushSymbol(text)
 
 		}
@@ -447,7 +451,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			position, tokenIndex = position4, tokenIndex4
 			return false
 		},
-		/* 2 list <- <('(' cell+ ')' Action0)> */
+		/* 2 list <- <('(' Action0 cell+ ')' Action1)> */
 		func() bool {
 			position12, tokenIndex12 := position, tokenIndex
 			{
@@ -456,6 +460,9 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 					goto l12
 				}
 				position++
+				if !_rules[ruleAction0]() {
+					goto l12
+				}
 				if !_rules[rulecell]() {
 					goto l12
 				}
@@ -473,7 +480,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 					goto l12
 				}
 				position++
-				if !_rules[ruleAction0]() {
+				if !_rules[ruleAction1]() {
 					goto l12
 				}
 				add(rulelist, position13)
@@ -520,7 +527,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			position, tokenIndex = position16, tokenIndex16
 			return false
 		},
-		/* 4 bool <- <(<(('t' 'r' 'u' 'e') / ('f' 'a' 'l' 's' 'e'))> Action1)> */
+		/* 4 bool <- <(<(('t' 'r' 'u' 'e') / ('f' 'a' 'l' 's' 'e'))> Action2)> */
 		func() bool {
 			position22, tokenIndex22 := position, tokenIndex
 			{
@@ -572,7 +579,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 				l25:
 					add(rulePegText, position24)
 				}
-				if !_rules[ruleAction1]() {
+				if !_rules[ruleAction2]() {
 					goto l22
 				}
 				add(rulebool, position23)
@@ -582,7 +589,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			position, tokenIndex = position22, tokenIndex22
 			return false
 		},
-		/* 5 int <- <(<(([1-9] [0-9]*) / '0')> Action2)> */
+		/* 5 int <- <(<(([1-9] [0-9]*) / '0')> Action3)> */
 		func() bool {
 			position27, tokenIndex27 := position, tokenIndex
 			{
@@ -617,7 +624,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 				l30:
 					add(rulePegText, position29)
 				}
-				if !_rules[ruleAction2]() {
+				if !_rules[ruleAction3]() {
 					goto l27
 				}
 				add(ruleint, position28)
@@ -627,7 +634,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			position, tokenIndex = position27, tokenIndex27
 			return false
 		},
-		/* 6 str <- <('"' <((!('"' / '\\') .) / '\\')*> '"' Action3)> */
+		/* 6 str <- <('"' <((!('"' / '\\') .) / '\\')*> '"' Action4)> */
 		func() bool {
 			position34, tokenIndex34 := position, tokenIndex
 			{
@@ -686,7 +693,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 					goto l34
 				}
 				position++
-				if !_rules[ruleAction3]() {
+				if !_rules[ruleAction4]() {
 					goto l34
 				}
 				add(rulestr, position35)
@@ -696,7 +703,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			position, tokenIndex = position34, tokenIndex34
 			return false
 		},
-		/* 7 symbol <- <(<(!delimiter .)+> Action4)> */
+		/* 7 symbol <- <(<(!delimiter .)+> Action5)> */
 		func() bool {
 			position44, tokenIndex44 := position, tokenIndex
 			{
@@ -736,7 +743,7 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 					}
 					add(rulePegText, position46)
 				}
-				if !_rules[ruleAction4]() {
+				if !_rules[ruleAction5]() {
 					goto l44
 				}
 				add(rulesymbol, position45)
@@ -825,39 +832,46 @@ func (p *Parser) Init(options ...func(*Parser) error) error {
 			position, tokenIndex = position59, tokenIndex59
 			return false
 		},
-		/* 12 Action0 <- <{ p.PushList() }> */
+		/* 12 Action0 <- <{ p.Begin() }> */
 		func() bool {
 			{
 				add(ruleAction0, position)
 			}
 			return true
 		},
-		nil,
-		/* 14 Action1 <- <{ p.PushBool(text) }> */
+		/* 13 Action1 <- <{ p.End() }> */
 		func() bool {
 			{
 				add(ruleAction1, position)
 			}
 			return true
 		},
-		/* 15 Action2 <- <{ p.PushInt(text) }> */
+		nil,
+		/* 15 Action2 <- <{ p.PushBool(text) }> */
 		func() bool {
 			{
 				add(ruleAction2, position)
 			}
 			return true
 		},
-		/* 16 Action3 <- <{ p.PushStr(text) }> */
+		/* 16 Action3 <- <{ p.PushInt(text) }> */
 		func() bool {
 			{
 				add(ruleAction3, position)
 			}
 			return true
 		},
-		/* 17 Action4 <- <{ p.PushSymbol(text) }> */
+		/* 17 Action4 <- <{ p.PushStr(text) }> */
 		func() bool {
 			{
 				add(ruleAction4, position)
+			}
+			return true
+		},
+		/* 18 Action5 <- <{ p.PushSymbol(text) }> */
+		func() bool {
+			{
+				add(ruleAction5, position)
 			}
 			return true
 		},
