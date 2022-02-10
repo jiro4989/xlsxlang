@@ -248,7 +248,7 @@ func TestParse(t *testing.T) {
 		},
 		{
 			desc:    "正常系: ネストしまくり",
-			program: `(+ 1 (- 2 (* 3 (/ 4 5))))`,
+			program: `(+ 1 (- (+ 1 1) (* 3 (/ 4 5))))`,
 			want: []Token{
 				{
 					Kind: kindList,
@@ -269,8 +269,21 @@ func TestParse(t *testing.T) {
 									ValueSymbol: "-",
 								},
 								{
-									Kind:     kindInt,
-									ValueInt: 2,
+									Kind: kindList,
+									ValueList: []Token{
+										{
+											Kind:        kindSymbol,
+											ValueSymbol: "+",
+										},
+										{
+											Kind:     kindInt,
+											ValueInt: 1,
+										},
+										{
+											Kind:     kindInt,
+											ValueInt: 1,
+										},
+									},
 								},
 								{
 									Kind: kindList,
