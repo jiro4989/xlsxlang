@@ -106,6 +106,28 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			desc:    "正常系: 複数のatom (改行)",
+			program: "+\n1\ntrue\n\"hello\"",
+			want: []Token{
+				{
+					Kind:        kindSymbol,
+					ValueSymbol: "+",
+				},
+				{
+					Kind:     kindInt,
+					ValueInt: 1,
+				},
+				{
+					Kind:      kindBool,
+					ValueBool: true,
+				},
+				{
+					Kind:     kindStr,
+					ValueStr: "hello",
+				},
+			},
+		},
+		{
 			desc:    "正常系: 単純な1つのリスト",
 			program: `(hello 1 "world" true)`,
 			want: []Token{
