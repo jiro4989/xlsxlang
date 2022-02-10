@@ -78,9 +78,6 @@ func (e *Tokenizer) End() {
 	e.push(token)
 }
 
-func (e *Tokenizer) Evaluate() {
-}
-
 func (e *Tokenizer) push(token Token) {
 	d := e.depth
 	if d < 1 {

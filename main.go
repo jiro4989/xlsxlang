@@ -30,7 +30,7 @@ func Main(args []string) ExitStatus {
 		Err(err)
 		return exitStatusParseErr
 	}
-	parser.Evaluate()
+	Evaluate(parser.tokens)
 
 	return exitStatusOK
 }
