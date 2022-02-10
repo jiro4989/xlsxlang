@@ -333,7 +333,7 @@ func TestParse(t *testing.T) {
 				return
 			}
 
-			got := parser.Eval.tokens
+			got := parser.tokens
 			assert.Equal(tt.want, got)
 		})
 	}

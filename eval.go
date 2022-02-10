@@ -6,7 +6,7 @@ import (
 
 type TokenKind int
 
-type Eval struct {
+type Tokenizer struct {
 	tokens       []Token
 	depth        int
 	bufferTokens []Token
@@ -29,7 +29,7 @@ const (
 	kindList
 )
 
-func (e *Eval) PushBool(s string) {
+func (e *Tokenizer) PushBool(s string) {
 	b, _ := strconv.ParseBool(s)
 	token := Token{
 		Kind:      kindBool,
@@ -38,7 +38,7 @@ func (e *Eval) PushBool(s string) {
 	e.push(token)
 }
 
-func (e *Eval) PushInt(s string) {
+func (e *Tokenizer) PushInt(s string) {
 	i, _ := strconv.ParseInt(s, 10, 64)
 	token := Token{
 		Kind:     kindInt,
@@ -47,7 +47,7 @@ func (e *Eval) PushInt(s string) {
 	e.push(token)
 }
 
-func (e *Eval) PushStr(s string) {
+func (e *Tokenizer) PushStr(s string) {
 	token := Token{
 		Kind:     kindStr,
 		ValueStr: s,
@@ -55,7 +55,7 @@ func (e *Eval) PushStr(s string) {
 	e.push(token)
 }
 
-func (e *Eval) PushSymbol(s string) {
+func (e *Tokenizer) PushSymbol(s string) {
 	token := Token{
 		Kind:        kindSymbol,
 		ValueSymbol: s,
@@ -63,7 +63,7 @@ func (e *Eval) PushSymbol(s string) {
 	e.push(token)
 }
 
-func (e *Eval) Begin() {
+func (e *Tokenizer) Begin() {
 	e.depth++
 	token := Token{
 		Kind: kindList,
@@ -71,17 +71,17 @@ func (e *Eval) Begin() {
 	e.bufferTokens = append(e.bufferTokens, token)
 }
 
-func (e *Eval) End() {
+func (e *Tokenizer) End() {
 	e.depth--
 	token := e.bufferTokens[e.depth]
 	e.bufferTokens = e.bufferTokens[:e.depth]
 	e.push(token)
 }
 
-func (e *Eval) Evaluate() {
+func (e *Tokenizer) Evaluate() {
 }
 
-func (e *Eval) push(token Token) {
+func (e *Tokenizer) push(token Token) {
 	d := e.depth
 	if d < 1 {
 		e.tokens = append(e.tokens, token)

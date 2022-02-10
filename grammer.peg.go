@@ -170,7 +170,7 @@ func (t *tokens32) Tokens() []token32 {
 }
 
 type Parser struct {
-	Eval
+	Tokenizer
 
 	Buffer string
 	buffer []rune
