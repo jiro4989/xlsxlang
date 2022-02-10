@@ -128,6 +128,21 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			desc:    "正常系: 要素が1つのみのリスト",
+			program: `(sym)`,
+			want: []Token{
+				{
+					Kind: kindList,
+					ValueList: []Token{
+						{
+							Kind:        kindSymbol,
+							ValueSymbol: "sym",
+						},
+					},
+				},
+			},
+		},
+		{
 			desc:    "正常系: 単純な1つのリスト",
 			program: `(hello 1 "world" true)`,
 			want: []Token{
