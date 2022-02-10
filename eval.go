@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type TokenKind int
 
 type Eval struct {
 	Token
+	BufferDepth int
+	BufferToken []Token
 }
 
 type Token struct {
@@ -28,23 +31,49 @@ const (
 )
 
 func (e *Eval) PushBool(s string) {
-	fmt.Println(s)
+	b, _ := strconv.ParseBool(s)
+	token := Token{
+		Kind:      kindBool,
+		ValueBool: b,
+	}
+	e.BufferToken = append(e.BufferToken, token)
+	e.Token = token
 }
 
 func (e *Eval) PushInt(s string) {
-	fmt.Println(s)
+	i, _ := strconv.ParseInt(s, 10, 64)
+	token := Token{
+		Kind:     kindInt,
+		ValueInt: i,
+	}
+	e.BufferToken = append(e.BufferToken, token)
+	e.Token = token
 }
 
 func (e *Eval) PushStr(s string) {
-	fmt.Println(s)
+	token := Token{
+		Kind:     kindStr,
+		ValueStr: s,
+	}
+	e.BufferToken = append(e.BufferToken, token)
+	e.Token = token
 }
 
 func (e *Eval) PushSymbol(s string) {
-	fmt.Println(s)
+	token := Token{
+		Kind:        kindSymbol,
+		ValueSymbol: s,
+	}
+	e.BufferToken = append(e.BufferToken, token)
+	e.Token = token
 }
 
 func (e *Eval) PushList() {
-	fmt.Println("push list")
+	token := Token{
+		Kind:      kindList,
+		ValueList: e.BufferToken,
+	}
+	e.Token = token
 }
 
 func (e *Eval) Evaluate() {

@@ -25,14 +25,23 @@ func Main(args []string) ExitStatus {
 		return exitStatusCommandLineOptionParseErr
 	}
 
-	parser := &Parser{Buffer: opts.Eval}
-	parser.Init()
-	if err := parser.Parse(); err != nil {
+	parser, err := parse(opts.Eval)
+	if err != nil {
 		Err(err)
 		return exitStatusParseErr
 	}
+	parser.Evaluate()
+
+	return exitStatusOK
+}
+
+func parse(s string) (*Parser, error) {
+	parser := &Parser{Buffer: s}
+	parser.Init()
+	if err := parser.Parse(); err != nil {
+		return nil, err
+	}
 
 	parser.Execute()
-	parser.Evaluate()
-	return exitStatusOK
+	return parser, nil
 }
