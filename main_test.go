@@ -54,6 +54,22 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			desc:    "正常系: symbolのみ",
+			program: "exists?",
+			want: Token{
+				Kind:        kindSymbol,
+				ValueSymbol: "exists?",
+			},
+		},
+		{
+			desc:    "正常系: symbolのみ",
+			program: "+",
+			want: Token{
+				Kind:        kindSymbol,
+				ValueSymbol: "+",
+			},
+		},
+		{
 			desc:    "正常系: 単純な1つのリスト",
 			program: `(hello 1 "world" true)`,
 			want: Token{
@@ -74,6 +90,45 @@ func TestParse(t *testing.T) {
 					{
 						Kind:      kindBool,
 						ValueBool: true,
+					},
+				},
+			},
+		},
+		{
+			desc:    "正常系: ネストしたリスト",
+			program: `(hello (foo 1) (bar true))`,
+			want: Token{
+				Kind: kindList,
+				ValueList: []Token{
+					{
+						Kind:        kindSymbol,
+						ValueSymbol: "hello",
+					},
+					{
+						Kind: kindList,
+						ValueList: []Token{
+							{
+								Kind:        kindSymbol,
+								ValueSymbol: "foo",
+							},
+							{
+								Kind:     kindInt,
+								ValueInt: 1,
+							},
+						},
+					},
+					{
+						Kind: kindList,
+						ValueList: []Token{
+							{
+								Kind:        kindSymbol,
+								ValueSymbol: "bar",
+							},
+							{
+								Kind:      kindBool,
+								ValueBool: true,
+							},
+						},
 					},
 				},
 			},
