@@ -2,26 +2,26 @@ package builtin
 
 import "math"
 
-func Plus(a, b int) int {
+func Plus(a, b int64) int64 {
 	return a + b
 }
 
-func Minus(a, b int) int {
+func Minus(a, b int64) int64 {
 	return a - b
 }
 
-func Mul(a, b int) int {
+func Mul(a, b int64) int64 {
 	return a * b
 }
 
-func Div(a, b int) int {
+func Div(a, b int64) int64 {
 	return a / b
 }
 
-func Mod(a, b int) int {
+func Mod(a, b int64) int64 {
 	return a % b
 }
 
-func Power(a, b int) int {
-	return int(math.Pow(float64(a), float64(b)))
+func Power(a, b int64) int64 {
+	return int64(math.Pow(float64(a), float64(b)))
 }
