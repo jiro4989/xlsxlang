@@ -8,4 +8,4 @@ grammer.peg.go: grammer.peg
 
 .PHONY: setup
 setup:
-	go install github.com/pointlander/peg@latest
+	go install github.com/pointlander/peg
