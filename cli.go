@@ -7,15 +7,15 @@ import (
 )
 
 type CmdArgs struct {
-	Eval string
-	Args []string
+	Program string
+	Args    []string
 }
 
 func ParseArgs() (*CmdArgs, error) {
 	opts := CmdArgs{}
 
 	flag.Usage = flagHelpMessage
-	flag.StringVar(&opts.Eval, "e", "", "one line of script")
+	flag.StringVar(&opts.Program, "e", "", "one line of script")
 	flag.Parse()
 	opts.Args = flag.Args()
 
@@ -40,7 +40,7 @@ func flagHelpMessage() {
 }
 
 func (c *CmdArgs) Validate() error {
-	if len(c.Args) < 1 && c.Eval == "" {
+	if len(c.Args) < 1 && c.Program == "" {
 		return fmt.Errorf("Must need args or '-e' option")
 	}
 

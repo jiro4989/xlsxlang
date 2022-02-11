@@ -30,8 +30,8 @@ func Main(args []string) ExitStatus {
 		return exitStatusCommandLineOptionParseErr
 	}
 
-	if opts.Eval != "" {
-		if err := eval(opts.Eval); err != nil {
+	if opts.Program != "" {
+		if err := eval(opts.Program); err != nil {
 			log.Err(err)
 			return exitStatusParseErr
 		}
