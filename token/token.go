@@ -56,6 +56,10 @@ func NewListToken() Token {
 	}
 }
 
+func (t *Token) IsTrue() bool {
+	return t.Kind == KindBool && t.ValueBool
+}
+
 func (t *Token) StringResult() string {
 	switch t.Kind {
 	case KindBool:

@@ -243,6 +243,93 @@ func TestEvaluate(t *testing.T) {
 			},
 			want: token.NewNilToken(),
 		},
+		{
+			desc: "正常系: 条件分岐 (if true 1 2)",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("if"),
+						token.NewBoolToken(true),
+						token.NewIntToken(1),
+						token.NewIntToken(2),
+					},
+				},
+			},
+			want: token.NewIntToken(1),
+		},
+		{
+			desc: "正常系: 条件分岐 (if (= 1 1) (+ 1 2) (* 2 3))",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("if"),
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("="),
+								token.NewIntToken(1),
+								token.NewIntToken(1),
+							},
+						},
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("+"),
+								token.NewIntToken(1),
+								token.NewIntToken(2),
+							},
+						},
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("*"),
+								token.NewIntToken(2),
+								token.NewIntToken(3),
+							},
+						},
+					},
+				},
+			},
+			want: token.NewIntToken(3),
+		},
+		{
+			desc: "正常系: 条件分岐 (if (= 2 1) (+ 1 2) (* 2 3))",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("if"),
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("="),
+								token.NewIntToken(2),
+								token.NewIntToken(1),
+							},
+						},
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("+"),
+								token.NewIntToken(1),
+								token.NewIntToken(2),
+							},
+						},
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("*"),
+								token.NewIntToken(2),
+								token.NewIntToken(3),
+							},
+						},
+					},
+				},
+			},
+			want: token.NewIntToken(6),
+		},
 	}
 
 	for _, tt := range tests {

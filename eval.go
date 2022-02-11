@@ -24,6 +24,23 @@ func Evaluate(tokens []token.Token) token.Token {
 		case token.KindNil:
 			return t
 		case token.KindSymbol:
+			// if は引数が3つ
+			if t.ValueSymbol == "if" {
+				var a, b, c token.Token
+				a, tokens = dequeue(tokens)
+				b, tokens = dequeue(tokens)
+				c, tokens = dequeue(tokens)
+
+				a = Evaluate([]token.Token{a})
+				var arg token.Token
+				// trueのときはbだけ評価、そうでなければcだけ評価
+				if a.IsTrue() {
+					arg = b
+				} else {
+					arg = c
+				}
+				return Evaluate([]token.Token{arg})
+			}
 			// mathの関数はいずれも引数が2つだけ
 			if f, ok := isBuiltinMathFunction(t); ok {
 				var a, b token.Token
