@@ -29,13 +29,21 @@ func Main(args []string) ExitStatus {
 		return exitStatusCommandLineOptionParseErr
 	}
 
-	parser, err := parse(opts.Eval)
-	if err != nil {
-		log.Err(err)
-		return exitStatusParseErr
+	if opts.Eval != "" {
+		parser, err := parse(opts.Eval)
+		if err != nil {
+			log.Err(err)
+			return exitStatusParseErr
+		}
+		result := Evaluate(parser.GetTokens())
+		fmt.Println(result.StringResult())
+
+		return exitStatusOK
 	}
-	result := Evaluate(parser.GetTokens())
-	fmt.Println(result.StringResult())
+
+	for _, filePath := range opts.Args {
+		ReadXlsx(filePath)
+	}
 
 	return exitStatusOK
 }
