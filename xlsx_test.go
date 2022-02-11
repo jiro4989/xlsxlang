@@ -24,6 +24,12 @@ func TestReadXlsx(t *testing.T) {
  )
 `,
 		},
+		{
+			desc:    "異常系: 1セルに2文字以上含めてはいけない",
+			path:    "./testdata/02.xlsx",
+			want:    "",
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
