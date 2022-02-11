@@ -14,7 +14,7 @@ func TestEvaluate(t *testing.T) {
 		want   token.Token
 	}{
 		{
-			desc: "正常系: シンプルな足し算",
+			desc: "正常系: 足し算",
 			tokens: []token.Token{
 				{
 					Kind: token.KindList,
@@ -26,6 +26,20 @@ func TestEvaluate(t *testing.T) {
 				},
 			},
 			want: token.NewIntToken(3),
+		},
+		{
+			desc: "正常系: 引き算",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("-"),
+						token.NewIntToken(2),
+						token.NewIntToken(1),
+					},
+				},
+			},
+			want: token.NewIntToken(1),
 		},
 	}
 
