@@ -195,6 +195,26 @@ func TestEvaluate(t *testing.T) {
 			},
 			want: token.NewIntToken(10),
 		},
+		{
+			desc: "正常系: 標準出力する (println (+ 1 2))",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("println"),
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("+"),
+								token.NewIntToken(1),
+								token.NewIntToken(2),
+							},
+						},
+					},
+				},
+			},
+			want: token.NewNilToken(),
+		},
 	}
 
 	for _, tt := range tests {

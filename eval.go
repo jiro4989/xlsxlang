@@ -34,6 +34,14 @@ func Evaluate(tokens []token.Token) token.Token {
 				b = Evaluate([]token.Token{b})
 				return f(a, b)
 			}
+			// print関数はいずれも引数が1つだけ
+			f2, ok := isBuiltinPrintFunction(t)
+			if ok {
+				var a token.Token
+				a, tokens = dequeue(tokens)
+				a = Evaluate([]token.Token{a})
+				return f2(a)
+			}
 		case token.KindList:
 			return Evaluate(t.ValueList)
 		}
@@ -47,13 +55,27 @@ func dequeue(tokens []token.Token) (token.Token, []token.Token) {
 	return t, tokens
 }
 
-func isBuiltinMathFunction(t token.Token) (func(a, b token.Token) token.Token, bool) {
+func isBuiltinMathFunction(t token.Token) (builtin.MathFunction, bool) {
 	if t.Kind != token.KindSymbol {
 		return nil, false
 	}
 
 	sym := t.ValueSymbol
-	f, ok := builtin.BuiltinMathFunctions[sym]
+	f, ok := builtin.MathFunctions[sym]
+	if !ok {
+		return nil, false
+	}
+
+	return f, ok
+}
+
+func isBuiltinPrintFunction(t token.Token) (builtin.PrintFunction, bool) {
+	if t.Kind != token.KindSymbol {
+		return nil, false
+	}
+
+	sym := t.ValueSymbol
+	f, ok := builtin.PrintFunctions[sym]
 	if !ok {
 		return nil, false
 	}

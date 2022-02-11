@@ -6,8 +6,10 @@ import (
 	"github.com/jiro4989/xlsxlang/token"
 )
 
+type MathFunction func(a, b token.Token) token.Token
+
 var (
-	BuiltinMathFunctions map[string]func(a, b token.Token) token.Token = map[string]func(a, b token.Token) token.Token{
+	MathFunctions map[string]MathFunction = map[string]MathFunction{
 		"+":  Plus,
 		"-":  Minus,
 		"*":  Mul,
