@@ -1,0 +1,51 @@
+= xlsxlang
+:sectnums:
+:toc: left
+
+`xlsxlang` is a tiny toy script programming language.
+In a typical programming language, the input file would be a plain text file.
+
+However, `xlsxlang` use an Excel file (.xlsx) as input. If you are a fan of
+Excel charts, this programming language will be useful for you.
+
+image:./docs/demo.gif[]
+
+== Usage
+
+[source,bash]
+----
+xlsxlang [options] [files...]
+----
+
+=== Examples
+
+Basic usage:
+
+[source,bash]
+----
+xlsxlang testdata/01.xlsx
+----
+
+== Installation
+
+[source,bash]
+----
+go install github.com/jiro4989/xlsxlang@main
+----
+
+or download executables from https://github.com/jiro4989/xlsxlang/releases[GitHub Releases].
+
+== Supported functions
+
+* `if`
+* `+`
+* `-`
+* `*`
+* `/`
+* `%`
+* `**`
+* `println`
+
+== LICENSE
+
+MIT
