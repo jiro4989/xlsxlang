@@ -6,6 +6,17 @@ import (
 	"github.com/jiro4989/xlsxlang/token"
 )
 
+var (
+	BuiltinMathFunctions map[string]func(a, b token.Token) token.Token = map[string]func(a, b token.Token) token.Token{
+		"+":  Plus,
+		"-":  Minus,
+		"*":  Mul,
+		"/":  Div,
+		"%":  Mod,
+		"**": Power,
+	}
+)
+
 func Plus(a, b token.Token) token.Token {
 	validateInt2(a, b)
 	return token.NewIntToken(a.ValueInt + b.ValueInt)
