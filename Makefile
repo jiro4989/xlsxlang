@@ -1,6 +1,6 @@
 xlsxlang: grammer.peg.go *.go */*.go
 	go fmt ./...
-	go build
+	go build -tags debug
 	go test -cover
 
 grammer.peg.go: grammer.peg
