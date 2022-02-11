@@ -56,10 +56,6 @@ func dequeue(tokens []token.Token) (token.Token, []token.Token) {
 }
 
 func isBuiltinMathFunction(t token.Token) (builtin.MathFunction, bool) {
-	if t.Kind != token.KindSymbol {
-		return nil, false
-	}
-
 	sym := t.ValueSymbol
 	f, ok := builtin.MathFunctions[sym]
 	if !ok {
@@ -70,10 +66,6 @@ func isBuiltinMathFunction(t token.Token) (builtin.MathFunction, bool) {
 }
 
 func isBuiltinPrintFunction(t token.Token) (builtin.PrintFunction, bool) {
-	if t.Kind != token.KindSymbol {
-		return nil, false
-	}
-
 	sym := t.ValueSymbol
 	f, ok := builtin.PrintFunctions[sym]
 	if !ok {
