@@ -69,6 +69,20 @@ func TestEvaluate(t *testing.T) {
 			},
 			want: token.NewIntToken(2),
 		},
+		{
+			desc: "正常系: 余剰",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("%"),
+						token.NewIntToken(10),
+						token.NewIntToken(3),
+					},
+				},
+			},
+			want: token.NewIntToken(1),
+		},
 	}
 
 	for _, tt := range tests {
