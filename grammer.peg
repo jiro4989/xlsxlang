@@ -6,7 +6,7 @@ type Parser Peg {
     token.Tokenizer
 }
 
-program   <- cell+
+program   <- (comment / cell)+
 cell      <- space* (list / atom) space*
 list      <- '('                          { p.Begin() }
              cell+
@@ -17,6 +17,8 @@ int       <- < [1-9] [0-9]* / [0] >       { p.PushInt(text) }
 str       <- '"' < ([^"\\] / '\\')* > '"' { p.PushStr(text) }
 nil       <- 'nil'                        { p.PushNil() }
 symbol    <- < (!delimiter .)+ >          { p.PushSymbol(text) }
-space     <- ' ' / '\n'
+space     <- ' ' / eol
 paren     <- '(' / ')'
 delimiter <- paren / space
+comment   <- space* ';' (!eol .)*
+eol       <- '\n'
