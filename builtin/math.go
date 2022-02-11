@@ -49,7 +49,7 @@ func Power(a, b token.Token) token.Token {
 
 func validateInt(t token.Token) {
 	if t.Kind != token.KindInt {
-		panic("token must be int")
+		panic("token must be int: kind = " + t.Kind.String())
 	}
 }
 
