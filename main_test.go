@@ -71,6 +71,11 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			desc:    "正常系: commentのみ",
+			program: "; this is comment",
+			want:    nil,
+		},
+		{
 			desc:    "正常系: 複数のatom",
 			program: `+ 1 true "hello"`,
 			want: []token.Token{
@@ -136,6 +141,81 @@ func TestParse(t *testing.T) {
 						token.NewStrToken("world"),
 						token.NewNilToken(),
 						token.NewBoolToken(true),
+					},
+				},
+			},
+		},
+		{
+			desc: "正常系: 単純な1つのリスト + コメント",
+			program: `(hello 1 "world" nil true)
+; this is comment`,
+			want: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("hello"),
+						token.NewIntToken(1),
+						token.NewStrToken("world"),
+						token.NewNilToken(),
+						token.NewBoolToken(true),
+					},
+				},
+			},
+		},
+		{
+			desc: "正常系: 単純な2つのリスト + コメント",
+			program: `; this is comment
+(hello 1 "world" nil true)
+; this is comment
+(+ 1 2)
+; this is comment
+`,
+			want: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("hello"),
+						token.NewIntToken(1),
+						token.NewStrToken("world"),
+						token.NewNilToken(),
+						token.NewBoolToken(true),
+					},
+				},
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("+"),
+						token.NewIntToken(1),
+						token.NewIntToken(2),
+					},
+				},
+			},
+		},
+		{
+			desc: "正常系: 間にコメントが挟まる",
+			program: `(+ 1 ; comment
+2)`,
+			want: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("+"),
+						token.NewIntToken(1),
+						token.NewIntToken(2),
+					},
+				},
+			},
+		},
+		{
+			desc:    "正常系: 行末にコメント",
+			program: `(+ 1 2); comment`,
+			want: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("+"),
+						token.NewIntToken(1),
+						token.NewIntToken(2),
 					},
 				},
 			},
