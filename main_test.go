@@ -64,6 +64,16 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			desc:    "正常系: nilのみ",
+			program: `nil`,
+			want: []Token{
+				{
+					Kind:     kindNil,
+					ValueNil: true,
+				},
+			},
+		},
+		{
 			desc:    "正常系: symbolのみ",
 			program: "exists?",
 			want: []Token{
@@ -144,7 +154,7 @@ func TestParse(t *testing.T) {
 		},
 		{
 			desc:    "正常系: 単純な1つのリスト",
-			program: `(hello 1 "world" true)`,
+			program: `(hello 1 "world" nil true)`,
 			want: []Token{
 				{
 					Kind: kindList,
@@ -160,6 +170,10 @@ func TestParse(t *testing.T) {
 						{
 							Kind:     kindStr,
 							ValueStr: "world",
+						},
+						{
+							Kind:     kindNil,
+							ValueNil: true,
 						},
 						{
 							Kind:      kindBool,

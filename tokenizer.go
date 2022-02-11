@@ -17,6 +17,7 @@ type Token struct {
 	ValueBool   bool
 	ValueInt    int64
 	ValueStr    string
+	ValueNil    bool
 	ValueSymbol string
 	ValueList   []Token
 }
@@ -25,6 +26,7 @@ const (
 	kindBool TokenKind = iota
 	kindInt
 	kindStr
+	kindNil
 	kindSymbol
 	kindList
 )
@@ -51,6 +53,14 @@ func (e *Tokenizer) PushStr(s string) {
 	token := Token{
 		Kind:     kindStr,
 		ValueStr: s,
+	}
+	e.push(token)
+}
+
+func (e *Tokenizer) PushNil() {
+	token := Token{
+		Kind:     kindNil,
+		ValueNil: true,
 	}
 	e.push(token)
 }
