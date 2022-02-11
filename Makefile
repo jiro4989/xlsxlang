@@ -1,5 +1,5 @@
 xlsxlang: grammer.peg.go *.go */*.go
-	go fmt .
+	go fmt ./...
 	go build
 	go test -cover
 
