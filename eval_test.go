@@ -153,6 +153,48 @@ func TestEvaluate(t *testing.T) {
 			},
 			want: token.NewIntToken(10),
 		},
+		{
+			desc: "正常系: ネストした演算, (+ (+ 1 (- 3 1)) (+ (+ 2 1) 4))",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("+"),
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("+"),
+								token.NewIntToken(1),
+								{
+									Kind: token.KindList,
+									ValueList: []token.Token{
+										token.NewSymbolToken("-"),
+										token.NewIntToken(3),
+										token.NewIntToken(1),
+									},
+								},
+							},
+						},
+						{
+							Kind: token.KindList,
+							ValueList: []token.Token{
+								token.NewSymbolToken("+"),
+								{
+									Kind: token.KindList,
+									ValueList: []token.Token{
+										token.NewSymbolToken("+"),
+										token.NewIntToken(2),
+										token.NewIntToken(1),
+									},
+								},
+								token.NewIntToken(4),
+							},
+						},
+					},
+				},
+			},
+			want: token.NewIntToken(10),
+		},
 	}
 
 	for _, tt := range tests {
