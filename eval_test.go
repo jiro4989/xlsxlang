@@ -97,6 +97,34 @@ func TestEvaluate(t *testing.T) {
 			},
 			want: token.NewIntToken(1024),
 		},
+		{
+			desc: "正常系: atom bool",
+			tokens: []token.Token{
+				token.NewBoolToken(true),
+			},
+			want: token.NewBoolToken(true),
+		},
+		{
+			desc: "正常系: atom int",
+			tokens: []token.Token{
+				token.NewIntToken(2),
+			},
+			want: token.NewIntToken(2),
+		},
+		{
+			desc: "正常系: atom str",
+			tokens: []token.Token{
+				token.NewStrToken("hello"),
+			},
+			want: token.NewStrToken("hello"),
+		},
+		{
+			desc: "正常系: atom nil",
+			tokens: []token.Token{
+				token.NewNilToken(),
+			},
+			want: token.NewNilToken(),
+		},
 	}
 
 	for _, tt := range tests {
