@@ -46,6 +46,7 @@ or download executables from https://github.com/jiro4989/xlsxlang/releases[GitHu
 * `%`
 * `**`
 * `println`
+* `; comment ...`
 
 == LICENSE
 
