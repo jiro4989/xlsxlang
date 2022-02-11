@@ -55,6 +55,20 @@ func TestEvaluate(t *testing.T) {
 			},
 			want: token.NewIntToken(15),
 		},
+		{
+			desc: "正常系: 除算",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("/"),
+						token.NewIntToken(10),
+						token.NewIntToken(5),
+					},
+				},
+			},
+			want: token.NewIntToken(2),
+		},
 	}
 
 	for _, tt := range tests {
