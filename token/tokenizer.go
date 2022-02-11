@@ -10,67 +10,40 @@ type Tokenizer struct {
 	bufferTokens []Token
 }
 
-type Token struct {
-	Kind        TokenKind
-	ValueBool   bool
-	ValueInt    int64
-	ValueStr    string
-	ValueNil    bool
-	ValueSymbol string
-	ValueList   []Token
-}
-
 func (e *Tokenizer) GetTokens() []Token {
 	return e.tokens
 }
 
 func (e *Tokenizer) PushBool(s string) {
 	b, _ := strconv.ParseBool(s)
-	token := Token{
-		Kind:      KindBool,
-		ValueBool: b,
-	}
+	token := NewBoolToken(b)
 	e.push(token)
 }
 
 func (e *Tokenizer) PushInt(s string) {
 	i, _ := strconv.ParseInt(s, 10, 64)
-	token := Token{
-		Kind:     KindInt,
-		ValueInt: i,
-	}
+	token := NewIntToken(i)
 	e.push(token)
 }
 
 func (e *Tokenizer) PushStr(s string) {
-	token := Token{
-		Kind:     KindStr,
-		ValueStr: s,
-	}
+	token := NewStrToken(s)
 	e.push(token)
 }
 
 func (e *Tokenizer) PushNil() {
-	token := Token{
-		Kind:     KindNil,
-		ValueNil: true,
-	}
+	token := NewNilToken()
 	e.push(token)
 }
 
 func (e *Tokenizer) PushSymbol(s string) {
-	token := Token{
-		Kind:        KindSymbol,
-		ValueSymbol: s,
-	}
+	token := NewSymbolToken(s)
 	e.push(token)
 }
 
 func (e *Tokenizer) Begin() {
 	e.depth++
-	token := Token{
-		Kind: KindList,
-	}
+	token := NewListToken()
 	e.bufferTokens = append(e.bufferTokens, token)
 }
 
