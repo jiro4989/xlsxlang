@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/jiro4989/xlsxlang/logger"
@@ -33,7 +34,8 @@ func Main(args []string) ExitStatus {
 		log.Err(err)
 		return exitStatusParseErr
 	}
-	Evaluate(parser.GetTokens())
+	result := Evaluate(parser.GetTokens())
+	fmt.Println(result.StringResult())
 
 	return exitStatusOK
 }

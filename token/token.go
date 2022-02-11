@@ -1,5 +1,10 @@
 package token
 
+import (
+	"fmt"
+	"strings"
+)
+
 type Token struct {
 	Kind        TokenKind
 	ValueBool   bool
@@ -49,4 +54,27 @@ func NewListToken() Token {
 	return Token{
 		Kind: KindList,
 	}
+}
+
+func (t *Token) StringResult() string {
+	switch t.Kind {
+	case KindBool:
+		return fmt.Sprintf("%v", t.ValueBool)
+	case KindInt:
+		return fmt.Sprintf("%d", t.ValueInt)
+	case KindStr:
+		return t.ValueStr
+	case KindNil:
+		return "nil"
+	case KindSymbol:
+		return fmt.Sprintf("Symbol:%v", t.ValueSymbol)
+	case KindList:
+		var arr []string
+		for _, v := range t.ValueList {
+			s := v.StringResult()
+			arr = append(arr, s)
+		}
+		return strings.Join(arr, ",")
+	}
+	return "Undefined"
 }

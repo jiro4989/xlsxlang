@@ -5,7 +5,40 @@ import (
 	"github.com/jiro4989/xlsxlang/token"
 )
 
-func Evaluate(tokens []token.Token) {
+func Evaluate(tokens []token.Token) token.Token {
+	for 0 < len(tokens) {
+		var t token.Token
+		t, tokens = dequeue(tokens)
+
+		switch t.Kind {
+		case token.KindBool:
+			return t
+		case token.KindInt:
+			return t
+		case token.KindStr:
+			return t
+		case token.KindNil:
+			return t
+		case token.KindSymbol:
+			// mathの関数はいずれも引数が2つだけ
+			f, ok := isBuiltinMathFunction(t)
+			if ok {
+				var a, b token.Token
+				a, tokens = dequeue(tokens)
+				b, tokens = dequeue(tokens)
+				return f(a, b)
+			}
+		case token.KindList:
+			return Evaluate(t.ValueList)
+		}
+	}
+	return token.NewNilToken()
+}
+
+func dequeue(tokens []token.Token) (token.Token, []token.Token) {
+	t := tokens[0]
+	tokens = tokens[1:]
+	return t, tokens
 }
 
 func isBuiltinMathFunction(t token.Token) (func(a, b token.Token) token.Token, bool) {
