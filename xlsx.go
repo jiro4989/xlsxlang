@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"unicode/utf8"
 
 	"github.com/xuri/excelize/v2"
 )
@@ -30,6 +31,9 @@ func ReadXlsx(path string) (string, error) {
 		for x, cell := range row {
 			if x == 0 {
 				continue
+			}
+			if 1 < utf8.RuneCountInString(cell) {
+				return "", fmt.Errorf("Cell has multi values. x = %d, y = %d, value = %v", x, y, cell)
 			}
 			if cell == "" {
 				cell = " "
