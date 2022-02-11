@@ -10,6 +10,7 @@ type MathFunction func(a, b token.Token) token.Token
 
 var (
 	MathFunctions map[string]MathFunction = map[string]MathFunction{
+		"=":  Equal,
 		"+":  Plus,
 		"-":  Minus,
 		"*":  Mul,
@@ -18,6 +19,11 @@ var (
 		"**": Power,
 	}
 )
+
+func Equal(a, b token.Token) token.Token {
+	validateInt2(a, b)
+	return token.NewBoolToken(a.ValueInt == b.ValueInt)
+}
 
 func Plus(a, b token.Token) token.Token {
 	validateInt2(a, b)

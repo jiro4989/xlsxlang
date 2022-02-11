@@ -14,6 +14,34 @@ func TestEvaluate(t *testing.T) {
 		want   token.Token
 	}{
 		{
+			desc: "正常系: 比較結果がtrue",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("="),
+						token.NewIntToken(1),
+						token.NewIntToken(1),
+					},
+				},
+			},
+			want: token.NewBoolToken(true),
+		},
+		{
+			desc: "正常系: 比較結果がfalse",
+			tokens: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("="),
+						token.NewIntToken(2),
+						token.NewIntToken(1),
+					},
+				},
+			},
+			want: token.NewBoolToken(false),
+		},
+		{
 			desc: "正常系: 加算",
 			tokens: []token.Token{
 				{
