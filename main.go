@@ -15,6 +15,7 @@ const (
 	exitStatusOK ExitStatus = iota
 	exitStatusCommandLineOptionParseErr
 	exitStatusParseErr
+	exitStatusReadXlsxErr
 )
 
 func main() {
@@ -30,22 +31,37 @@ func Main(args []string) ExitStatus {
 	}
 
 	if opts.Eval != "" {
-		parser, err := parse(opts.Eval)
-		if err != nil {
+		if err := eval(opts.Eval); err != nil {
 			log.Err(err)
 			return exitStatusParseErr
 		}
-		result := Evaluate(parser.GetTokens())
-		fmt.Println(result.StringResult())
-
 		return exitStatusOK
 	}
 
 	for _, filePath := range opts.Args {
-		ReadXlsx(filePath)
+		program, err := ReadXlsx(filePath)
+		if err != nil {
+			log.Err(err)
+			return exitStatusReadXlsxErr
+		}
+		if err := eval(program); err != nil {
+			log.Err(err)
+			return exitStatusParseErr
+		}
 	}
 
 	return exitStatusOK
+}
+
+func eval(program string) error {
+	parser, err := parse(program)
+	if err != nil {
+		return err
+	}
+	result := Evaluate(parser.GetTokens())
+	fmt.Println(result.StringResult())
+
+	return nil
 }
 
 func parse(s string) (*Parser, error) {
