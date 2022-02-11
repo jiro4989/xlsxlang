@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+
+	"github.com/jiro4989/xlsxlang/logger"
 )
 
 type ExitStatus int
@@ -19,15 +21,16 @@ func main() {
 }
 
 func Main(args []string) ExitStatus {
+	log := logger.New(appName, os.Stdout, os.Stderr)
 	opts, err := ParseArgs()
 	if err != nil {
-		Err(err)
+		log.Err(err)
 		return exitStatusCommandLineOptionParseErr
 	}
 
 	parser, err := parse(opts.Eval)
 	if err != nil {
-		Err(err)
+		log.Err(err)
 		return exitStatusParseErr
 	}
 	Evaluate(parser.GetTokens())
