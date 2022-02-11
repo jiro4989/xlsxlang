@@ -6,8 +6,8 @@ type Parser Peg {
     token.Tokenizer
 }
 
-program   <- (comment / cell)+
-cell      <- space* (list / atom) space*
+program   <- cell+
+cell      <- space* (comment / list / atom) space*
 list      <- '('                          { p.Begin() }
              cell+
              ')'                          { p.End() }
