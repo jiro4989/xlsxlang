@@ -3,6 +3,7 @@
 :toc: left
 
 `xlsxlang` is a tiny toy script programming language.
+`xlsxlang` is heavily inspired by Lisp.
 In a typical programming language, the input file would be a plain text file.
 
 However, `xlsxlang` use an Excel file (.xlsx) as input. If you are a fan of
