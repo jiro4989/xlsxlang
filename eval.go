@@ -25,8 +25,7 @@ func Evaluate(tokens []token.Token) token.Token {
 			return t
 		case token.KindSymbol:
 			// mathの関数はいずれも引数が2つだけ
-			f, ok := isBuiltinMathFunction(t)
-			if ok {
+			if f, ok := isBuiltinMathFunction(t); ok {
 				var a, b token.Token
 				a, tokens = dequeue(tokens)
 				b, tokens = dequeue(tokens)
@@ -35,12 +34,11 @@ func Evaluate(tokens []token.Token) token.Token {
 				return f(a, b)
 			}
 			// print関数はいずれも引数が1つだけ
-			f2, ok := isBuiltinPrintFunction(t)
-			if ok {
+			if f, ok := isBuiltinPrintFunction(t); ok {
 				var a token.Token
 				a, tokens = dequeue(tokens)
 				a = Evaluate([]token.Token{a})
-				return f2(a)
+				return f(a)
 			}
 		case token.KindList:
 			return Evaluate(t.ValueList)
