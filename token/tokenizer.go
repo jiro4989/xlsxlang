@@ -4,8 +4,6 @@ import (
 	"strconv"
 )
 
-type TokenKind int
-
 type Tokenizer struct {
 	tokens       []Token
 	depth        int
@@ -21,15 +19,6 @@ type Token struct {
 	ValueSymbol string
 	ValueList   []Token
 }
-
-const (
-	KindBool TokenKind = iota
-	KindInt
-	KindStr
-	KindNil
-	KindSymbol
-	KindList
-)
 
 func (e *Tokenizer) GetTokens() []Token {
 	return e.tokens
