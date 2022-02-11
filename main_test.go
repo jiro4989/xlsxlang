@@ -18,124 +18,76 @@ func TestParse(t *testing.T) {
 			desc:    "正常系: trueのみ",
 			program: "true",
 			want: []token.Token{
-				{
-					Kind:      token.KindBool,
-					ValueBool: true,
-				},
+				token.NewBoolToken(true),
 			},
 		},
 		{
 			desc:    "正常系: falseのみ",
 			program: "false",
 			want: []token.Token{
-				{
-					Kind:      token.KindBool,
-					ValueBool: false,
-				},
+				token.NewBoolToken(false),
 			},
 		},
 		{
 			desc:    "正常系: intのみ",
 			program: "1",
 			want: []token.Token{
-				{
-					Kind:     token.KindInt,
-					ValueInt: 1,
-				},
+				token.NewIntToken(1),
 			},
 		},
 		{
 			desc:    "正常系: intのみ",
 			program: "255",
 			want: []token.Token{
-				{
-					Kind:     token.KindInt,
-					ValueInt: 255,
-				},
+				token.NewIntToken(255),
 			},
 		},
 		{
 			desc:    "正常系: stringのみ",
 			program: `"hello"`,
 			want: []token.Token{
-				{
-					Kind:     token.KindStr,
-					ValueStr: "hello",
-				},
+				token.NewStrToken("hello"),
 			},
 		},
 		{
 			desc:    "正常系: nilのみ",
 			program: `nil`,
 			want: []token.Token{
-				{
-					Kind:     token.KindNil,
-					ValueNil: true,
-				},
+				token.NewNilToken(),
 			},
 		},
 		{
 			desc:    "正常系: symbolのみ",
 			program: "exists?",
 			want: []token.Token{
-				{
-					Kind:        token.KindSymbol,
-					ValueSymbol: "exists?",
-				},
+				token.NewSymbolToken("exists?"),
 			},
 		},
 		{
 			desc:    "正常系: symbolのみ",
 			program: "+",
 			want: []token.Token{
-				{
-					Kind:        token.KindSymbol,
-					ValueSymbol: "+",
-				},
+				token.NewSymbolToken("+"),
 			},
 		},
 		{
 			desc:    "正常系: 複数のatom",
 			program: `+ 1 true "hello"`,
 			want: []token.Token{
-				{
-					Kind:        token.KindSymbol,
-					ValueSymbol: "+",
-				},
-				{
-					Kind:     token.KindInt,
-					ValueInt: 1,
-				},
-				{
-					Kind:      token.KindBool,
-					ValueBool: true,
-				},
-				{
-					Kind:     token.KindStr,
-					ValueStr: "hello",
-				},
+				token.NewSymbolToken("+"),
+				token.NewIntToken(1),
+				token.NewBoolToken(true),
+				token.NewStrToken("hello"),
 			},
 		},
 		{
 			desc:    "正常系: 複数のatom (改行)",
 			program: "+\n1\ntrue\n\"hello\"",
 			want: []token.Token{
-				{
-					Kind:        token.KindSymbol,
-					ValueSymbol: "+",
-				},
-				{
-					Kind:     token.KindInt,
-					ValueInt: 1,
-				},
-				{
-					Kind:      token.KindBool,
-					ValueBool: true,
-				},
-				{
-					Kind:     token.KindStr,
-					ValueStr: "hello",
-				},
+				token.NewSymbolToken("+"),
+				token.NewIntToken(1),
+				token.NewBoolToken(true),
+				token.NewStrToken("hello"),
 			},
 		},
 		{
@@ -145,10 +97,7 @@ func TestParse(t *testing.T) {
 				{
 					Kind: token.KindList,
 					ValueList: []token.Token{
-						{
-							Kind:        token.KindSymbol,
-							ValueSymbol: "sym",
-						},
+						token.NewSymbolToken("sym"),
 					},
 				},
 			},
@@ -160,26 +109,11 @@ func TestParse(t *testing.T) {
 				{
 					Kind: token.KindList,
 					ValueList: []token.Token{
-						{
-							Kind:        token.KindSymbol,
-							ValueSymbol: "hello",
-						},
-						{
-							Kind:     token.KindInt,
-							ValueInt: 1,
-						},
-						{
-							Kind:     token.KindStr,
-							ValueStr: "world",
-						},
-						{
-							Kind:     token.KindNil,
-							ValueNil: true,
-						},
-						{
-							Kind:      token.KindBool,
-							ValueBool: true,
-						},
+						token.NewSymbolToken("hello"),
+						token.NewIntToken(1),
+						token.NewStrToken("world"),
+						token.NewNilToken(),
+						token.NewBoolToken(true),
 					},
 				},
 			},
@@ -191,21 +125,12 @@ func TestParse(t *testing.T) {
 				{
 					Kind: token.KindList,
 					ValueList: []token.Token{
-						{
-							Kind:        token.KindSymbol,
-							ValueSymbol: "hello",
-						},
+						token.NewSymbolToken("hello"),
 						{
 							Kind: token.KindList,
 							ValueList: []token.Token{
-								{
-									Kind:        token.KindSymbol,
-									ValueSymbol: "foo",
-								},
-								{
-									Kind:     token.KindInt,
-									ValueInt: 1,
-								},
+								token.NewSymbolToken("foo"),
+								token.NewIntToken(1),
 							},
 						},
 					},
@@ -219,42 +144,21 @@ func TestParse(t *testing.T) {
 				{
 					Kind: token.KindList,
 					ValueList: []token.Token{
-						{
-							Kind:        token.KindSymbol,
-							ValueSymbol: "=",
-						},
+						token.NewSymbolToken("="),
 						{
 							Kind: token.KindList,
 							ValueList: []token.Token{
-								{
-									Kind:        token.KindSymbol,
-									ValueSymbol: "+",
-								},
-								{
-									Kind:     token.KindInt,
-									ValueInt: 1,
-								},
-								{
-									Kind:     token.KindInt,
-									ValueInt: 2,
-								},
+								token.NewSymbolToken("+"),
+								token.NewIntToken(1),
+								token.NewIntToken(2),
 							},
 						},
 						{
 							Kind: token.KindList,
 							ValueList: []token.Token{
-								{
-									Kind:        token.KindSymbol,
-									ValueSymbol: "-",
-								},
-								{
-									Kind:     token.KindInt,
-									ValueInt: 3,
-								},
-								{
-									Kind:     token.KindInt,
-									ValueInt: 2,
-								},
+								token.NewSymbolToken("-"),
+								token.NewIntToken(3),
+								token.NewIntToken(2),
 							},
 						},
 					},
@@ -268,64 +172,31 @@ func TestParse(t *testing.T) {
 				{
 					Kind: token.KindList,
 					ValueList: []token.Token{
-						{
-							Kind:        token.KindSymbol,
-							ValueSymbol: "+",
-						},
-						{
-							Kind:     token.KindInt,
-							ValueInt: 1,
-						},
+						token.NewSymbolToken("+"),
+						token.NewIntToken(1),
 						{
 							Kind: token.KindList,
 							ValueList: []token.Token{
-								{
-									Kind:        token.KindSymbol,
-									ValueSymbol: "-",
-								},
+								token.NewSymbolToken("-"),
 								{
 									Kind: token.KindList,
 									ValueList: []token.Token{
-										{
-											Kind:        token.KindSymbol,
-											ValueSymbol: "+",
-										},
-										{
-											Kind:     token.KindInt,
-											ValueInt: 1,
-										},
-										{
-											Kind:     token.KindInt,
-											ValueInt: 1,
-										},
+										token.NewSymbolToken("+"),
+										token.NewIntToken(1),
+										token.NewIntToken(1),
 									},
 								},
 								{
 									Kind: token.KindList,
 									ValueList: []token.Token{
-										{
-											Kind:        token.KindSymbol,
-											ValueSymbol: "*",
-										},
-										{
-											Kind:     token.KindInt,
-											ValueInt: 3,
-										},
+										token.NewSymbolToken("*"),
+										token.NewIntToken(3),
 										{
 											Kind: token.KindList,
 											ValueList: []token.Token{
-												{
-													Kind:        token.KindSymbol,
-													ValueSymbol: "/",
-												},
-												{
-													Kind:     token.KindInt,
-													ValueInt: 4,
-												},
-												{
-													Kind:     token.KindInt,
-													ValueInt: 5,
-												},
+												token.NewSymbolToken("/"),
+												token.NewIntToken(4),
+												token.NewIntToken(5),
 											},
 										},
 									},
