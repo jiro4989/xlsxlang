@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/jiro4989/xlsxlang/logger"
+	"github.com/jiro4989/xlsxlang/token"
 )
 
 type ExitStatus int
@@ -58,8 +59,10 @@ func eval(program string) error {
 	if err != nil {
 		return err
 	}
-	result := Evaluate(parser.GetTokens())
-	fmt.Println(result.StringResult())
+	for _, t := range parser.GetTokens() {
+		result := Evaluate([]token.Token{t})
+		fmt.Println(result.StringResult())
+	}
 
 	return nil
 }

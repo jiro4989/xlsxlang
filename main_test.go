@@ -91,6 +91,28 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
+			desc:    "正常系: 複数のlist",
+			program: `(+ 1 2) (+ 3 4)`,
+			want: []token.Token{
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("+"),
+						token.NewIntToken(1),
+						token.NewIntToken(2),
+					},
+				},
+				{
+					Kind: token.KindList,
+					ValueList: []token.Token{
+						token.NewSymbolToken("+"),
+						token.NewIntToken(3),
+						token.NewIntToken(4),
+					},
+				},
+			},
+		},
+		{
 			desc:    "正常系: 要素が1つのみのリスト",
 			program: `(sym)`,
 			want: []token.Token{
