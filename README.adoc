@@ -8,7 +8,7 @@ In a typical programming language, the input file would be a plain text file.
 However, `xlsxlang` use an Excel file (.xlsx) as input. If you are a fan of
 Excel charts, this programming language will be useful for you.
 
-image:./docs/demo.gif[]
+image:./docs/demo1.gif[]
 
 == Usage
 
