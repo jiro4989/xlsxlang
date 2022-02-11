@@ -31,7 +31,7 @@ func Main(args []string) ExitStatus {
 	}
 
 	if opts.Program != "" {
-		if err := eval(opts.Program); err != nil {
+		if err := RunOneliner(opts.Program); err != nil {
 			log.Err(err)
 			return exitStatusParseErr
 		}
