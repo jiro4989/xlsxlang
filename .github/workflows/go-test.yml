@@ -42,6 +42,7 @@ jobs:
             echo "[ERR] please run 'go fmt ./...'" >&2
             exit 1
           fi
+        shell: bash
       - run: go build
       - run: go install
       - run: go test -cover ./...
