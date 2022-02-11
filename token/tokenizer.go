@@ -1,4 +1,4 @@
-package main
+package token
 
 import (
 	"strconv"
@@ -23,18 +23,22 @@ type Token struct {
 }
 
 const (
-	kindBool TokenKind = iota
-	kindInt
-	kindStr
-	kindNil
-	kindSymbol
-	kindList
+	KindBool TokenKind = iota
+	KindInt
+	KindStr
+	KindNil
+	KindSymbol
+	KindList
 )
+
+func (e *Tokenizer) GetTokens() []Token {
+	return e.tokens
+}
 
 func (e *Tokenizer) PushBool(s string) {
 	b, _ := strconv.ParseBool(s)
 	token := Token{
-		Kind:      kindBool,
+		Kind:      KindBool,
 		ValueBool: b,
 	}
 	e.push(token)
@@ -43,7 +47,7 @@ func (e *Tokenizer) PushBool(s string) {
 func (e *Tokenizer) PushInt(s string) {
 	i, _ := strconv.ParseInt(s, 10, 64)
 	token := Token{
-		Kind:     kindInt,
+		Kind:     KindInt,
 		ValueInt: i,
 	}
 	e.push(token)
@@ -51,7 +55,7 @@ func (e *Tokenizer) PushInt(s string) {
 
 func (e *Tokenizer) PushStr(s string) {
 	token := Token{
-		Kind:     kindStr,
+		Kind:     KindStr,
 		ValueStr: s,
 	}
 	e.push(token)
@@ -59,7 +63,7 @@ func (e *Tokenizer) PushStr(s string) {
 
 func (e *Tokenizer) PushNil() {
 	token := Token{
-		Kind:     kindNil,
+		Kind:     KindNil,
 		ValueNil: true,
 	}
 	e.push(token)
@@ -67,7 +71,7 @@ func (e *Tokenizer) PushNil() {
 
 func (e *Tokenizer) PushSymbol(s string) {
 	token := Token{
-		Kind:        kindSymbol,
+		Kind:        KindSymbol,
 		ValueSymbol: s,
 	}
 	e.push(token)
@@ -76,7 +80,7 @@ func (e *Tokenizer) PushSymbol(s string) {
 func (e *Tokenizer) Begin() {
 	e.depth++
 	token := Token{
-		Kind: kindList,
+		Kind: KindList,
 	}
 	e.bufferTokens = append(e.bufferTokens, token)
 }

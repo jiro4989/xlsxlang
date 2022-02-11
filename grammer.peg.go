@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/jiro4989/xlsxlang/token"
 	"io"
 	"os"
 	"sort"
@@ -174,7 +175,7 @@ func (t *tokens32) Tokens() []token32 {
 }
 
 type Parser struct {
-	Tokenizer
+	token.Tokenizer
 
 	Buffer string
 	buffer []rune
