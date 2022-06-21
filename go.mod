@@ -3,7 +3,7 @@ module github.com/jiro4989/xlsxlang
 go 1.17
 
 require (
-	github.com/stretchr/testify v1.7.3
+	github.com/stretchr/testify v1.7.4
 	github.com/xuri/excelize/v2 v2.6.0
 )
 
