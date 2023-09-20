@@ -21,7 +21,7 @@ jobs:
         os: [linux, windows, darwin]
         arch: [amd64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ env.go-version }}
@@ -54,7 +54,7 @@ jobs:
   build-debian-package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ env.go-version }}
@@ -80,7 +80,7 @@ jobs:
   build-rpm-package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ env.go-version }}
@@ -112,7 +112,7 @@ jobs:
       - build-debian-package
       - build-rpm-package
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Release
         id: create-release
         uses: actions/create-release@v1
